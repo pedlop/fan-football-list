@@ -1,0 +1,30 @@
+<div class="container">
+  <form [formGroup]="addPlayerForm" novalidate (ngSubmit)="onClickAddPlayer()">
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Name" formControlName="name">
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Last Name" formControlName="lastName">
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Age" formControlName="age">
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Team" formControlName="team">
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Position" formControlName="position">
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="Situation" formControlName="situation">
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="addPlayerForm.invalid">Submit</button>
+  </form>
+</div>
+
+<ul>
+  <li *ngFor="let player of players">
+    {{player.name}} {{player.lastName}} - {{player.position}} <button (click)="onClickRemovePlayer(player._id)">Remove</button>
+  </li>
+</ul>
+<app-loading *ngIf="load"></app-loading>
