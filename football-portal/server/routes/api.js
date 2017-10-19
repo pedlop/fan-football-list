@@ -3,11 +3,14 @@ const router = express.Router();
 const MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 
-// const USERS_COLLECTION = "users";
+const local = 'mongodb://localhost:27017/football-portal';
+const mLab = require('../../access-keys');
+// const USERS_COLLECTION = 'users';
+// const PLAYERS_COLLECTION = 'users';
 
 // Connect
 const connection = (closure) => {
-    return MongoClient.connect('mongodb://localhost:27017/football-portal', (err, db) => {
+    return MongoClient.connect(mLab._ordepdb.url, (err, db) => {
         if (err) return console.log(err);
 
         closure(db);
@@ -108,6 +111,92 @@ router.delete('/users/:id', (req, res) => {
             .deleteOne({_id: new ObjectID(req.params.id)})
             .then((result) => {
                 response.data = result;
+                res.json(response);
+            })
+            .catch((err) => {
+                sendError(err, res);
+            })
+    });
+});
+
+// PLAYERS API - TRANSFER TO ANOTHER FILE
+router.get('/players', (req, res) => {
+    connection((db) => {
+        db.collection('players')
+            .find()
+            .toArray()
+            .then((players) => {
+                response.data = players;
+                res.json(response);
+            })
+            .catch((err) => {
+                sendError(err, res);
+            });
+    });
+});
+
+router.post('/players', (req, res) => {
+    let newPlayer = req.body;
+    newPlayer.createDate = new Date();
+
+    connection((db) => {
+        db.collection('players')
+            .insertOne(newPlayer)
+            .then((players) => {
+                response.data = players;
+                response.message = 'Player was added successfully!';
+                res.json(response);
+            })
+            .catch((err) => {
+                sendError(err, res);
+            })
+    });
+});
+
+/*  "/api/players/:id"
+ *    GET: find player by id
+ *    PUT: update player by id
+ *    DELETE: deletes player by id
+ */
+
+router.get('/players/:id', (req, res) => {
+    connection((db) => {
+        db.collection('players')
+            .findOne({_id: new ObjectID(req.params.id)})
+            .then((player) => {
+                response.data = player;
+                res.json(response);
+            })
+            .catch((err) => {
+                sendError(err, res);
+            });
+    });
+});
+
+router.put('/players/:id', (req, res) => {
+    let updatePlayer = req.body;
+    delete updatePlayer._id;
+
+    connection((db) => {
+        db.collection('players')
+            .updateOne({_id: new ObjectID(req.params.id)}, updatePlayer)
+            .then((player) => {
+                response.data = player;
+                res.json(response);
+            })
+            .catch((err) => {
+                sendError(err, res);
+            })
+    });
+});
+
+router.delete('/players/:id', (req, res) => {
+    connection((db) => {
+        db.collection('players')
+            .deleteOne({_id: new ObjectID(req.params.id)})
+            .then((result) => {
+                response.data = result;
+                response.message = 'Player was removed successfully!';
                 res.json(response);
             })
             .catch((err) => {
