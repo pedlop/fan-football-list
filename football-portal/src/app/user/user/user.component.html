@@ -1,0 +1,10 @@
+<p>
+  user works!
+</p>
+<div>
+  <ul *ngFor="let user of users">
+    <li>
+      {{user.name}} <button (click)="onClickRemoveUser(user._id)">Remove User</button>
+    </li>
+  </ul>
+</div>

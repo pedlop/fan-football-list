@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 // import 'rxjs/add/operator/map';
 
 @Injectable()
-export class AppService {
+export class UserService {
 
   // private sub: Subject<any>;
 
@@ -14,15 +14,19 @@ export class AppService {
     // this.sub = new Subject();
   }
 
-  getUsers(): Observable<any> {
+  getAll(): Observable<any> {
     return this.http.get('/api/users');
   }
 
-  getUserById(id: any): Observable<any> {
+  findById(id: any): Observable<any> {
     return this.http.get(`/api/users/${id}`);
   }
 
-  removeUser(id: any): Observable<any> {
+  create(user: any): Observable<any> {
+    return this.http.post('/api/users', user);
+  }
+
+  remove(id: any): Observable<any> {
     return this.http.delete(`/api/users/${id}`);
       // .map(() => {
       //   this.sub.next();
