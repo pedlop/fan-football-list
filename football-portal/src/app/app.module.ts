@@ -7,9 +7,10 @@ import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 
 import { UserModule } from './user/user.module';
-import { FootballPlayerModule } from './player/player.module';
+import { PlayerModule } from './player/player.module';
 import { LoadingModule } from './shared/loading/loading.module';
 import { ToastModule } from 'portal-shared';
+import { TeamModule } from './team/team.module';
 import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
@@ -22,9 +23,10 @@ import { AppRoutingModule } from './app-routing.module';
     BrowserModule,
     HttpClientModule,
     UserModule,
-    FootballPlayerModule,
+    PlayerModule,
     LoadingModule,
     ToastModule.forRoot(),
+    TeamModule,
     AppRoutingModule
   ],
   providers: [],

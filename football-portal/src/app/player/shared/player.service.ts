@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Player } from './player';
 
 @Injectable()
-export class FootballPlayerService {
+export class PlayerService {
 
   constructor(private http: HttpClient) { }
 
@@ -28,5 +28,9 @@ export class FootballPlayerService {
   remove(id: any): Observable<any> {
     return this.http.delete(`/api/players/${id}`);
   }
+
+  // findByPosition(position: any): Observable<any> {
+  //   return this.http.get('/api/players', position);
+  // }
 
 }

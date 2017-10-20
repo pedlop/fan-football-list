@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { ToastService } from 'portal-shared';
 
-import { FootballPlayerService } from './../shared/player.service';
+import { PlayerService } from './../shared/player.service';
 
 @Component({
   selector: 'app-create-player',
@@ -21,7 +21,7 @@ export class CreatePlayerComponent implements OnInit {
 
   load: boolean;
 
-  constructor(private formBuilder: FormBuilder, private playerService: FootballPlayerService,
+  constructor(private formBuilder: FormBuilder, private playerService: PlayerService,
               private toastService: ToastService) {
     this.newPlayer = new Player();
     this.load = true;
@@ -37,6 +37,7 @@ export class CreatePlayerComponent implements OnInit {
       situation: ['', Validators.required]
     });
     this.getPlayers();
+    this.getPlayer();
   }
 
   onClickAddPlayer() {
@@ -66,10 +67,10 @@ export class CreatePlayerComponent implements OnInit {
   }
 
   private getPlayer() {
-    this.playerService.findById('59e7ae809b8704a712f56305').subscribe(
+    this.playerService.findById('59e8e4d3093cf711d18ada90').subscribe(
       player => {
         this.player = player.data;
-        // console.log(this.players);
+        console.log(this.player);
       }
     );
   }
@@ -77,7 +78,7 @@ export class CreatePlayerComponent implements OnInit {
   private getPlayers() {
     this.playerService.getAll().subscribe(
       players => {
-        // console.log(players.data);
+        console.log(players.data);
         this.players = players.data;
         this.load = false;
       }
