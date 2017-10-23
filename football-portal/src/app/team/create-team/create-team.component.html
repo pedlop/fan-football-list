@@ -1,17 +1,27 @@
 <p>
   create-team works!
 </p>
-<div>
+<div class="container">
   <h4>Esquema tatico</h4>
-  <form>
-    <input type="text" placeholder="4">
-    <input type="text" placeholder="4">
-    <input type="text" placeholder="2">
-    <button type="submit">Submit</button>
-  </form>
+  <select name="" id="" (change)="onChange($event)">
+    <option *ngFor="let tatical of taticals"  value="{{tatical.id}}">{{tatical.scheme}}</option>
+  </select>
+
+  <div>
+    <!-- <form> -->
+      <input type="text" placeholder="GoalKeeper">
+      <input type="text" placeholder="Defender">
+      <input type="text" placeholder="Middle">
+      <input type="text" placeholder="Offensive">      
+      <button type="submit">Submit</button>
+    <!-- </form> -->
+  </div>
+  
 </div>
 
 <div class="players">
   
 </div>
+
+
 
