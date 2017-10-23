@@ -1,13 +1,20 @@
 const express = require('express');
 const ObjectID = require('mongodb').ObjectID;
-const dataBase = require('../mongoDB');
 
+const connection = require('../connection');
+const response = require('../response');
+const error = require('../error');
+
+/*  "/api/players"
+ *    POST: creates a new player
+ *    GET: reads all player
+ */
 
 function createPlayer(req, res) {
     let newPlayer = req.body;
     newPlayer.createDate = new Date();
-
-    dataBase.connection((db) => {
+    
+    connection((db) => {
         db.collection('players')
             .insertOne(newPlayer)
             .then((players) => {
@@ -16,13 +23,13 @@ function createPlayer(req, res) {
                 res.json(response);
             })
             .catch((err) => {
-                sendError(err, res);
+                error.sendError(err, res);
             })
     });
 }
 
-function findPlayers(req, res) {
-    dataBase.connection((db) => {
+function readPlayers(req, res) {
+    connection((db) => {
         db.collection('players')
             .find()
             .toArray()
@@ -31,7 +38,7 @@ function findPlayers(req, res) {
                 res.json(response);
             })
             .catch((err) => {
-                sendError(err, res);
+                error.sendError(err, res);
             });
     });
 }
@@ -43,7 +50,7 @@ function findPlayers(req, res) {
  */
 
 function readPlayerById(req, res) {
-    dataBase.connection((db) => {
+    connection((db) => {
         db.collection('players')
             .findOne({_id: new ObjectID(req.params.id)})
             .then((player) => {
@@ -51,7 +58,7 @@ function readPlayerById(req, res) {
                 res.json(response);
             })
             .catch((err) => {
-                sendError(err, res);
+                error.sendError(err, res);
             });
     });
 }
@@ -60,7 +67,7 @@ function updatePlayer(req, res) {
     let updatePlayer = req.body;
     delete updatePlayer._id;
 
-    dataBase.connection((db) => {
+    connection((db) => {
         db.collection('players')
             .updateOne({_id: new ObjectID(req.params.id)}, updatePlayer)
             .then((player) => {
@@ -68,13 +75,13 @@ function updatePlayer(req, res) {
                 res.json(response);
             })
             .catch((err) => {
-                sendError(err, res);
+                error.sendError(err, res);
             })
     });
 }
 
 function deletePlayer(req, res) {
-    dataBase.connection((db) => {
+    connection((db) => {
         db.collection('players')
             .deleteOne({_id: new ObjectID(req.params.id)})
             .then((result) => {
@@ -83,7 +90,7 @@ function deletePlayer(req, res) {
                 res.json(response);
             })
             .catch((err) => {
-                sendError(err, res);
+                error.sendError(err, res);
             })
     });
 }
@@ -106,7 +113,7 @@ function deletePlayer(req, res) {
 // });
 
 module.exports.createPlayer = createPlayer;
-module.exports.findPlayers = findPlayers;
+module.exports.readPlayers = readPlayers;
 module.exports.readPlayerById = readPlayerById;
 module.exports.updatePlayer = updatePlayer;
 module.exports.deletePlayer = deletePlayer;

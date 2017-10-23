@@ -1,4 +1,9 @@
+const express = require('express');
 const ObjectID = require('mongodb').ObjectID;
+
+const connection = require('../connection');
+const response = require('../response');
+const error = require('../error');
 
 /*  "/api/users"
  *    POST: creates a new user
@@ -9,7 +14,7 @@ function createUser(req, res) {
     let newUser = req.body;
     newUser.createDate = new Date();
 
-    dataBase.connection((db) => {
+    connection((db) => {
         db.collection('users')
             .insertOne(newUser)
             .then((users) => {
@@ -17,22 +22,22 @@ function createUser(req, res) {
                 res.json(response);
             })
             .catch((err) => {
-                sendError(err, res);
+                error.sendError(err, res);
             })
     });
 };
 
 function readUsers(req, res) {
-    dataBase.connection((db) => {
+    connection((db) => {
         db.collection('users')
-            .read()
+            .find()
             .toArray()
             .then((users) => {
                 response.data = users;
                 res.json(response);
             })
             .catch((err) => {
-                sendError(err, res);
+                error.sendError(err, res);
             });
     });
 }
@@ -44,15 +49,15 @@ function readUsers(req, res) {
  */
 
 function readUserById(req, res) {
-    dataBase.connection((db) => {
+    connection((db) => {
         db.collection('users')
-            .readOne({_id: new ObjectID(req.params.id)})
+            .findOne({_id: new ObjectID(req.params.id)})
             .then((user) => {
                 response.data = user;
                 res.json(response);
             })
             .catch((err) => {
-                sendError(err, res);
+                error.sendError(err, res);
             });
     });
 }
@@ -61,7 +66,7 @@ function updateUser(req, res) {
     let updateUser = req.body;
     delete updateUser._id;
 
-    dataBase.connection((db) => {
+    connection((db) => {
         db.collection('users')
             .updateOne({_id: new ObjectID(req.params.id)}, updateUser)
             .then((user) => {
@@ -69,13 +74,13 @@ function updateUser(req, res) {
                 res.json(response);
             })
             .catch((err) => {
-                sendError(err, res);
+                error.sendError(err, res);
             })
     });
 }
 
 function deleteUser(req, res) {
-    dataBase.connection((db) => {
+    connection((db) => {
         db.collection('users')
             .deleteOne({_id: new ObjectID(req.params.id)})
             .then((result) => {
@@ -83,7 +88,7 @@ function deleteUser(req, res) {
                 res.json(response);
             })
             .catch((err) => {
-                sendError(err, res);
+                error.sendError(err, res);
             })
     });
 }

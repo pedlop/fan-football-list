@@ -6,7 +6,7 @@ const local = 'mongodb://localhost:27017/football-portal';
 const mLab = require('../access-keys');
 
 // Connect
-module.exports.connection =  (closure) => {
+const connection = (closure) => {
     return MongoClient.connect(mLab._ordepdb.url, (err, db) => {
         if (err) return console.log(err);
 
@@ -14,3 +14,4 @@ module.exports.connection =  (closure) => {
     });
 };
 
+module.exports = connection;

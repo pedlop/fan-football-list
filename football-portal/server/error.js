@@ -6,3 +6,5 @@ const sendError = (err, res) => {
     response.message = typeof err == 'object' ? err.message : err;
     res.status(501).json(response);
 };
+
+module.exports.sendError = sendError;

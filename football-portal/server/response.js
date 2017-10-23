@@ -4,3 +4,5 @@ let response = {
     data: [],
     message: null
 };
+
+module.exports = response;
